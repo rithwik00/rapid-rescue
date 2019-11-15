@@ -131,6 +131,10 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 	# no_cells_height
 	# no_cells_width
  
+	(i_x, i_y) = initial_point
+	(f_x, f_y) = final_point
+	#print(initial_point, final_point)
+
 	i, j = 0, 0
  
 	## temprary maze image : which stores image of cell
@@ -200,6 +204,7 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 	
 	# Maze size 
 	N = int(2*width_binary/CELL_SIZE-1)
+	#print('N is ', N)
 	# Creating a 4 * 4 2-D list 
 	sol = [ [ 0 for j in range(N) ] for i in range(N) ] 
 	wasHere = np.zeros((2*no_cells_width - 1, 2*no_cells_height - 1), dtype=int)
@@ -221,7 +226,7 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 	
 	def solveMaze2( maze ): 
 		
-		if solveMazeUtil(maze, 0, 0, sol) == False: 
+		if solveMazeUtil(maze, i_x, i_y, sol) == False: 
 			print("Solution doesn't exist What to do????")
 			#printSolution( wasHere )
 			return False
@@ -242,15 +247,33 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 			sol[x][y] = 1
 			wasHere[x][y] = 1
 			
-			# Move forward in x direction 
-			if(x + 1 != N and wasHere[x + 1][y] != 1):	
-				if solveMazeUtil(maze, x + 1, y, sol) == True: 
-					return True
+			curr_x = N-1-x
+			curr_y = N-1-y
+
+			if(curr_x > curr_y):
+					key = 1
+			else:
+					key = 2
+
+			
+			# Move forward in x direction
+			if(key == 1): 
+				key = 2
+				if(x + 1 != N and wasHere[x + 1][y] != 1):	
+					if solveMazeUtil(maze, x + 1, y, sol) == True: 
+						return True
 			# If moving in x direction doesn't give solution 
 			# then Move down in y direction 
-			if(y + 1 != N and wasHere[x][y + 1] != 1):	
-				if solveMazeUtil(maze, x, y + 1, sol) == True: 
-					return True
+			if(key == 2):
+				key = 1
+				if(y + 1 != N and wasHere[x][y + 1] != 1):	
+					if solveMazeUtil(maze, x, y + 1, sol) == True: 
+						return True
+
+			if(key == 1): 
+				if(x + 1 != N and wasHere[x + 1][y] != 1):	
+					if solveMazeUtil(maze, x + 1, y, sol) == True: 
+						return True
 
 			if(x != 0 and wasHere[x-1][y] != 1):
 					if solveMazeUtil(maze, x - 1, y, sol) == True: 
@@ -269,9 +292,9 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 			sol[x][y] = 0
 			wasHere[x][y] = 1
 			return False
- 
+
 	solveMaze2( maze )
- 
+	#printSolution( sol )
 	solution = []
 	wasHere = np.zeros((2*no_cells_width - 1, 2*no_cells_height - 1), dtype=bool)
 
@@ -296,16 +319,19 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 			final(x    , y - 1)
 		return False
  
-	final(0, 0)
+	final(i_x, i_y)
+	#print('initial are x, y ', (i_x, i_y))
  
 	i = 0
 	#print(len(solution))
+	#print('solution is', solution)
 
 	while(i <= len(solution)):
 		p, q = solution[i]
 		p = int(p / 2)
 		q = int(q / 2)
 		shortestPath.append((p, q))
+		#print('i is', i)
 		i = i + 2
 	#print(shortestPath)
 	#print(len(shortestPath))
@@ -443,4 +469,5 @@ if __name__ == '__main__':
 	else:
 
 		print('')
+
 

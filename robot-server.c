@@ -20,12 +20,10 @@
 /*
 * Team ID:			[ Team-ID ]
 * Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
-* Filename:			robot-server.c
-* Functions:		socket_create, receive_from_send_to_client
+* Filename:			task_1a.py
+* Functions:		readImage, solveMaze
 * 					[ Comma separated list of functions in this file ]
-* Global variables:	SERVER_PORT, RX_BUFFER_SIZE, TX_BUFFER_SIZE, MAXCHAR,
-* 					dest_addr, source_addr, rx_buffer, tx_buffer,
-* 					ipv4_addr_str, ipv4_addr_str_client, listen_sock, line_data, input_fp, output_fp
+* Global variables:	CELL_SIZE
 * 					[ List of global variables defined in this file ]
 */
 
@@ -50,24 +48,26 @@
 #define MAXCHAR 1000				// max characters to read from txt file
 
 // Global variables
-struct sockaddr_in dest_addr;    //SERVER
-struct sockaddr_in source_addr;	  //CLIENT
+struct sockaddr_in dest_addr;
+struct sockaddr_in source_addr;
 
 char rx_buffer[RX_BUFFER_SIZE];		// buffer to store data from client
-char tx_buffer[TX_BUFFER_SIZE];		// buffer to store data to be sent to client
+char tx_buffer[RX_BUFFER_SIZE];		// buffer to store data to be sent to client
 
 char ipv4_addr_str[128];			// buffer to store IPv4 addresses as string
 char ipv4_addr_str_client[128];		// buffer to store IPv4 addresses as string
 
-int listen_sock, MAX_CLIENT = 10;
+int listen_sock;
 
 char line_data[MAXCHAR];
 
 FILE *input_fp, *output_fp;
 
 //by me
+#define MAX_CLIENT 2
 char send1[1024];
 FILE *dream_fp;
+int receive_from_send_to_client(int);
 
 void createDream() {
 		
@@ -123,7 +123,6 @@ void createDream() {
 
 //end by me
 
-
 /*
 * Function Name:	socket_create
 * Inputs:			dest_addr [ structure type for destination address ]
@@ -137,17 +136,17 @@ int socket_create(struct sockaddr_in dest_addr, struct sockaddr_in source_addr){
 	int addr_family;
 	int ip_protocol;
 
-	dest_addr.sin_addr.s_addr = INADDR_ANY;
+	dest_addr.sin_addr.s_addr = htonl(INADDR_ANY);
 	dest_addr.sin_family = AF_INET;
 	dest_addr.sin_port = htons(SERVER_PORT);
 	addr_family = AF_INET;
 	ip_protocol = IPPROTO_IP;
-	char *hello = "Hello from server"; 
 
+	int my_sock;
 
 	//edited code
 	int len = sizeof(struct sockaddr_in); 
-	int my_sock, cli;
+	int cli;
 	my_sock = socket(PF_INET, SOCK_STREAM, 0);
 	
 
@@ -165,9 +164,11 @@ int socket_create(struct sockaddr_in dest_addr, struct sockaddr_in source_addr){
 		receive_from_send_to_client(listen_sock);
 		close(listen_sock);
 	}
-    //edit end               
+    //edit end      
+
 	return my_sock;
 }
+
 
 /*
 * Function Name:	receive_from_send_to_client
@@ -179,23 +180,25 @@ int socket_create(struct sockaddr_in dest_addr, struct sockaddr_in source_addr){
 * Example call: 	receive_from_send_to_client(sock);
 */
 int receive_from_send_to_client(int sock){
-	
+
+
 	//edit code
 	char *hello = "Hello from server";
-	createDream();
+	//createDream();
 	char *dream = "dream.txt"; 
-	char dataToBeRead[1024]; 
+	char dataToBeRead[1024];
 	dream_fp = fopen(dream, "r");
 	int valread;
 
 	
 	while( fgets ( dataToBeRead, 1024, dream_fp ) != NULL ) {
 		valread = read(sock, rx_buffer, 1024);
-		printf("here ===>%s %d\n", rx_buffer, valread);
+		printf("recieved ===>%s %d\n", rx_buffer, valread);
+		printf("sent ===>%s\n", dataToBeRead);
 		send(sock , dataToBeRead, strlen(dataToBeRead),0);
 
 	}
-	send(sock ,hello, strlen(hello),0);
+
 	/*read = getline(&line, &len, input_fp);
 	int t = 4;
     while ( t--) {
@@ -207,18 +210,9 @@ int receive_from_send_to_client(int sock){
     }*/
 
 	//editend
+	fclose(dream_fp);
 	return 0;
-
 }
-
-
-/*
-* Function Name:	main()
-* Inputs:			None
-* Outputs: 			None
-* Purpose: 			the function solves Task 1B problem statement by making call to
-* 					functions socket_create() and receive_from_send_to_client()
-*/
 
 
 int main() {
