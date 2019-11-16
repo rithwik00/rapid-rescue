@@ -85,9 +85,11 @@ void createDream() {
 		return	;
 	}
 
-	
+	int flag = 0;
+
 	while( fgets ( dataToBeRead, 1024, input_fp ) != NULL ) { 
-        if(i % 2 == 0) {
+        label:
+		if(i % 2 == 0) {
         	//printf("%d\n", dataToBeRead[0]);
         	while(m_n != (int)dataToBeRead[0] - 48) {
 				fputs("@$@", dream_fp);
@@ -113,6 +115,12 @@ void createDream() {
 				fputs("\n", dream_fp);
 			}
 			m_n++;
+			if(flag == 0) {
+				flag = 1;
+				i = 0;
+				m_n = 0;
+				goto label;
+			}
 		}
 		
 		i++;  
@@ -184,7 +192,7 @@ int receive_from_send_to_client(int sock){
 
 	//edit code
 	char *hello = "Hello from server";
-	//createDream();
+	createDream();
 	char *dream = "dream.txt"; 
 	char dataToBeRead[1024];
 	dream_fp = fopen(dream, "r");

@@ -156,7 +156,7 @@ def find_new_path(recv_data, shortestPath):
 		cv2.imshow('colored' + str(obstacle_pos), img)
 	
 	new_shortestPath = task_1a.solveMaze(img, new_initial_point, final_point, no_cells_height, no_cells_width)
-
+	print('new? (', new_shortestPath)
 	###################################################
 
 	return obstacle_coord, new_shortestPath, new_initial_point, img
