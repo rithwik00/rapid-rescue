@@ -130,24 +130,20 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 	# final_point
 	# no_cells_height
 	# no_cells_width
- 
-	(i_x, i_y) = initial_point
-	(f_x, f_y) = final_point
-	#print(initial_point, final_point)
-
+	i_x, i_y = initial_point
 	i, j = 0, 0
- 
+
 	## temprary maze image : which stores image of cell
 	maze = np.zeros((CELL_SIZE, CELL_SIZE), dtype=int)
 	h_m, w_m = maze.shape
- 
+
 	## ans is the matrix that will be solved 
 	## with help of shortest path algorithms
 	ans = np.zeros((2*no_cells_width, 2*no_cells_height), dtype=int)
 	h_a, w_a = ans.shape
- 
+
 	height_binary, width_binary = original_binary_img.shape
- 
+
 	## IMPORTANTS 
 	## 
 	## while i reaches end
@@ -167,13 +163,13 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 
 			#i / 10 because it was /20 then *2 
 			ans[int(2*i/CELL_SIZE)][int(2*j/CELL_SIZE)] = 1#255
-			
+
 			## Diagnostic prints
 			#print(maze[2][w-2])
 			#print(maze[h-2][2])
 			#plt.imshow(maze)
 			#plt.show()
-			
+
 
 			## wall = 0
 			## not wall = 255
@@ -195,58 +191,59 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 
 	#print('converted', ans.shape)
 	#print(ans)
-	
+
 	answer = ans
 	answer = np.delete(ans, h_a - 1, 0)
 	answer = np.delete(answer, w_a - 1, 1)
 
 	maze = answer.tolist()
-	
+
+
 	# Maze size 
 	N = int(2*width_binary/CELL_SIZE-1)
-	#print('N is ', N)
 	# Creating a 4 * 4 2-D list 
 	sol = [ [ 0 for j in range(N) ] for i in range(N) ] 
 	wasHere = np.zeros((2*no_cells_width - 1, 2*no_cells_height - 1), dtype=int)
- 
- 
+
+
 	def printSolution( sol ): 
-		
+
 		for i in sol: 
 			for j in i: 
 				print(str(j) + " ", end ="") 
 			print("")
 
+
 	def isSafe( maze, x, y ): 
-	
+
 		if x >= 0 and x < N and y >= 0 and y < N and maze[x][y] == 1: 
 			return True
-		
+
 		return False
-	
+
 	def solveMaze2( maze ): 
-		
-		if solveMazeUtil(maze, i_x, i_y, sol) == False: 
+
+		if solveMazeUtil(maze, 2*i_x, 2*i_y, sol) == False: 
 			print("Solution doesn't exist What to do????")
 			#printSolution( wasHere )
 			return False
-		
+
 		#printSolution(sol) 
 		return True
- 
+
 	def solveMazeUtil(maze, x, y, sol): 
 		#print('\n', sol)
 		# if (x, y is goal) return True 
 		if x == N-1 and y == N-1: ####################################################################################
 			sol[x][y] = 1
 			return True
-			
+
 		# Check if maze[x][y] is valid 
 		if isSafe(maze, x, y) == True: 
 			# mark x, y as part of solution path 
 			sol[x][y] = 1
 			wasHere[x][y] = 1
-			
+
 			curr_x = N-1-x
 			curr_y = N-1-y
 
@@ -294,7 +291,7 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 			return False
 
 	solveMaze2( maze )
-	#printSolution( sol )
+
 	solution = []
 	wasHere = np.zeros((2*no_cells_width - 1, 2*no_cells_height - 1), dtype=bool)
 
@@ -318,24 +315,20 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 			final(x - 1, y    )
 			final(x    , y - 1)
 		return False
- 
-	final(i_x, i_y)
-	#print('initial are x, y ', (i_x, i_y))
- 
+
+	final(2*i_x, 2*i_y)
+
 	i = 0
 	#print(len(solution))
-	#print('solution is', solution)
 
 	while(i <= len(solution)):
 		p, q = solution[i]
 		p = int(p / 2)
 		q = int(q / 2)
 		shortestPath.append((p, q))
-		#print('i is', i)
 		i = i + 2
 	#print(shortestPath)
 	#print(len(shortestPath))
- 
  
 	###################################################
 	
