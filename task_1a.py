@@ -174,10 +174,14 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 			## wall = 0
 			## not wall = 255
 			## The ifNotWall? logic
-			if(int(maze[2][w_m-2]) == 255):
+			if(int(maze[h_m//2][w_m-1]) == 255):
 				ans[int(2*i/CELL_SIZE)][int(2*j/CELL_SIZE)+1] = 1#255
-			if(int(maze[h_m-2][2]) == 255):
+			if(int(maze[h_m-1][w_m//2]) == 255):
 				ans[int(2*i/CELL_SIZE)+1][int(2*j/CELL_SIZE)] = 1#255
+			if(i != 0 and int(maze[0][w_m//2] == 0)):
+				ans[int(2*i/CELL_SIZE)-1][int(2*j/CELL_SIZE)] = 0#255
+			if(j != 0 and int(maze[h_m//2][0] == 0)):
+				ans[int(2*i/CELL_SIZE)][int(2*j/CELL_SIZE)-1] = 0#255
 			#if(maze[5][5] == 0):
 			#    ans[int(2*i/CELL_SIZE)][int(2*j/CELL_SIZE)+1] = 0
 			#     ans[int(2*i/CELL_SIZE)+1][int(2*j/CELL_SIZE)] = 0
