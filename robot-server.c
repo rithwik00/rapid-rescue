@@ -18,12 +18,14 @@
 */
 
 /*
-* Team ID:			[ Team-ID ]
-* Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
+* Team ID:			[ 2863 ]
+* Author List:		[ Names of team members worked on this file separated by Comma: Rithwik, Sanket, Bhumit, Ved ]
 * Filename:			task_1a.py
-* Functions:		readImage, solveMaze
+* Functions:		socket_create, receive_from_send_to_client, createDream
 * 					[ Comma separated list of functions in this file ]
-* Global variables:	CELL_SIZE
+* Global variables:	SERVER_PORT, RX_BUFFER_SIZE, TX_BUFFER_SIZE, MAXCHAR, MAX_CLIENT
+* 					dest_addr, source_addr, rx_buffer, tx_buffer, 
+* 					ipv4_addr_str, ipv4_addr_str_client, listen_sock, line_data, input_fp, output_fp, dream_fp
 * 					[ List of global variables defined in this file ]
 */
 
@@ -65,13 +67,12 @@ FILE *input_fp, *output_fp;
 
 //by me
 #define MAX_CLIENT 2
-char send1[1024];
 FILE *dream_fp;
-int receive_from_send_to_client(int);
+int receive_from_send_to_client(int); // just the declaration
 
+// this function creates one dream file with all the bytes to be send in sequence
 void createDream() {
 		
-	
 	int i = 0, k;
 	int m_n = 0;	
     char *dream = "dream.txt"; 
@@ -119,7 +120,7 @@ void createDream() {
 				flag = 1;
 				i = 0;
 				m_n = 0;
-				goto label;
+				goto label; // my brain had no choice (T_T)
 			}
 		}
 		
@@ -128,7 +129,6 @@ void createDream() {
 	fclose(dream_fp) ; 
 	fclose(input_fp);
 }
-
 //end by me
 
 /*

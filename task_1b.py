@@ -19,8 +19,8 @@
 '''
 
 
-# Team ID:			[ Team-ID ]
-# Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
+# Team ID:			[ 2863 ]
+# Author List:		[ Names of team members worked on this file separated by Comma: Sanket, Bhumit, Rithwik, Ved ]
 # Filename:			task_1b.py
 # Functions:		connect_to_server, send_to_receive_from_server, find_new_path
 # 					[ Comma separated list of functions in this file ]
@@ -43,9 +43,7 @@ SERVER_IP = '127.0.0.1'
 SERVER_PORT = 3333
 SERVER_ADDRESS = (SERVER_IP, SERVER_PORT)
 
-# file_num = 0
-# obstacle_list = []
-# obstacle_pos = 0
+## Big Thank you For providing the defination of rest of the functions _/\_ X 4
 
 ##  Function that creates socket communication
 def connect_to_server(SERVER_ADDRESS):
@@ -62,12 +60,12 @@ def connect_to_server(SERVER_ADDRESS):
 
 	Returns:
 	---
-	`original_binary_img` :	[ numpy array ]
-		binary form of the original image at img_file_path
+	`sock` :	[ object of socket class ]
+		object of socket class for socket communication
 
 	Example call:
 	---
-	original_binary_img = readImage(img_file_path)
+	sock = connect_to_server(SERVER_ADDRESS)
 
 	"""
 
@@ -131,7 +129,7 @@ def find_new_path(recv_data, shortestPath):
 		obstacle_y = (int(recv_data[comma_idx+1]))
 	
 	obstacle_coord = (obstacle_x, obstacle_y)
-	print('obs loc is', obstacle_coord)
+	#print('obs loc is', obstacle_coord)
 
 	obstacle_list.append(obstacle_x)
 	obstacle_list.append(obstacle_y)

@@ -19,12 +19,12 @@
 '''
 
 
-# Team ID:			[ Team-ID ]
-# Author List:		[ Names of team members worked on this file separated by Comma: Name1, Name2, ... ]
+# Team ID:			[ 2863 ]
+# Author List:		[ Names of team members worked on this file separated by Comma: Sanket, Rithwik, Bhumit, Ved ]
 # Filename:			task_1a.py
-# Functions:		readImage, solveMaze
+# Functions:		readImage, solveMaze, isValid, BFS
 # 					[ Comma separated list of functions in this file ]
-# Global variables:	CELL_SIZE
+# Global variables:	CELL_SIZE, INT_MAX
 # 					[ List of global variables defined in this file ]
 
 
@@ -38,9 +38,9 @@ import os
 # To enhance the maze image
 import image_enhancer
 
-# import my me
-import queue
-INT_MAX = 2147483647
+# edit my me
+INT_MAX = 2147483647 # int max of c++
+# edit end
 
 # Maze images in task_1a_images folder have cell size of 20 pixels
 CELL_SIZE = 20
@@ -133,6 +133,7 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 	# final_point
 	# no_cells_height
 	# no_cells_width
+	
 	i_x, i_y = initial_point
 	f_x, f_y = final_point
 
@@ -155,7 +156,7 @@ def solveMaze(original_binary_img, initial_point, final_point, no_cells_height, 
 	##    |
 	##    while j reaches end
 	##    |   |
-	##    |   check the cell image for right and bottom walls
+	##    |   check the cell image for right, top, left and bottom walls
 	##    |   |
 	##    |   if (walls)
 	##    |   |   |
@@ -250,27 +251,29 @@ def isValid(mat, visited, row, col, N):
 	return (row >= 0) and (row < M) and (col >= 0) and (col < N) and mat[row][col]==1 and (not visited[row][col])
 
 def BFS(mat, i, j, x, y, visited, row, col, N):
-    # construct a matrix to keep track of visited cells
+    # this function is inspired by internet
+	# construct a matrix to keep track of visited cells
 
 	M = N
 	# initially all cells are unvisited
 	#memset(visited, false, sizeof visited);
 	
 	# create an empty queue
-	q = queue.Queue(maxsize = 0)
-	# mark source cell as visited and enqueue the source node
+	# q = queue.Queue(maxsize = 0)
+	myQueue = [] # list is used as a queue
 	visited[i][j] = True
 	temp = Node(i, j, 0)
 	temp.path.append((i, j))
-	q.put(temp)
+	#q.put(temp)
+	enQueue(temp, myQueue)
 	#print('good1')
 	# stores length of longest path from source to destination
 
 	# run till queue is not empty	
-	while (not q.empty()):
+	while (not isEmpty(myQueue)):
 
 			# pop front node from queue and process it
-			node = q.get()
+			node = deQueue(myQueue)
 			#q.pop();
 			
 			# (i, j) represents current cell and dist stores its
@@ -304,14 +307,32 @@ def BFS(mat, i, j, x, y, visited, row, col, N):
 					temp.path = node.path.copy()
 					temp.path.append((i + row[k], j + col[k]))
 					#print('must not me empty', len(temp.path))
-					q.put(temp)
+					enQueue(temp, myQueue)
 					#print('good3')
 					#q.push({ i + row[k], j + col[k], dist + 1 });
-	#print('good4')
 	
+	#print(min_dist)
+	myQueue.clear()
 	return final_path
 
+def enQueue(a, queue):
+	if(isFull(queue) == False):
+		queue.append(a)
+		return
+	print('Queue overflow')
 
+def isEmpty(queue):
+    return(len(queue) == 0)
+
+def deQueue(queue):
+	if isEmpty(queue) == False:
+		temp = queue[0]
+		queue.remove(queue[0])
+		return temp
+	print('Empty queue')
+
+def isFull(queue):
+    return(len(queue) >= INT_MAX)
 
 #########################################################################
 
