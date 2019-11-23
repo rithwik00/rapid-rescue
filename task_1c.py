@@ -110,8 +110,8 @@ def computeSum(img_file_path, shortestPath):
 	for i in range(num_cells_height):
 		for j in range(num_cells_width):
 			cell_img = binaryCell(i, j, binary_img, cell_img)
-			cell_img = removeWalls(cell_img, wallWidth)
-			if(checkNum(cell_img) == True):
+			cell_img_noWall = removeWalls(cell_img, wallWidth)
+			if(checkNum(cell_img_noWall) == True):
 				probableCoordinates.append((i, j))
 
 	print(probableCoordinates)
@@ -136,10 +136,10 @@ def grayCell(i, j, img, cell_img):
 	cell_img = img[i:i + task_1a.CELL_SIZE, j:j + task_1a.CELL_SIZE]
 	return cell_img
 
-def removeWalls(cell_image, wallWidth):
-	cell_image = cell_image[wallWidth : task_1a.CELL_SIZE - wallWidth, 
+def removeWalls(cell_img, wallWidth):
+	cell_img = cell_img[wallWidth : task_1a.CELL_SIZE - wallWidth, 
 							wallWidth : task_1a.CELL_SIZE - wallWidth]
-	return cell_image
+	return cell_img
 
 def checkNum(cell_img):
 	temp_h, temp_w = cell_img.shape
@@ -147,6 +147,11 @@ def checkNum(cell_img):
 		for l in range(temp_w):
 			if(cell_img[k][l] < 255):
 				return True
+
+
+
+def isInPath(i, j, shortestPath, cell_img):
+
 
 #########################################################################
 
