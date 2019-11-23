@@ -148,7 +148,7 @@ def checkNum(cell_img):
 			if(cell_img[k][l] < 255):
 				return True
 
-
+def isWall(cell_img):
 
 def isInPath(i, j, shortestPath, cell_img):
 
